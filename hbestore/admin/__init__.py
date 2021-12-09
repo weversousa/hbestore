@@ -64,7 +64,32 @@ class BrandView(ModelView):
 
 class ProductView(ModelView):
     def on_model_change(self, form, model, is_created):
+        if not is_created:
+            try:
+                for photo in model.photos:
+                    unlink("hbestore/static/img/products/" + photo.name)
+            except (IndexError, FileNotFoundError):
+                pass
+
+            photos = model.photo
+
+            try:
+                for photo in photos:
+                    ext = secure_filename(photo.filename).split(".")[1]
+                    name = f"{token_hex(30)}.{ext}"
+                    photo.save("hbestore/static/img/products/" + name)
+
+                    format_image("hbestore/static/img/products/" + name)
+
+                    new_photo = Photo(name)
+
+                    model.photos.append(new_photo)
+            except (IndexError, FileNotFoundError):
+                pass
+            return super().on_model_change(form, model, is_created)
+
         photos = model.photo
+
         try:
             for photo in photos:
                 ext = secure_filename(photo.filename).split(".")[1]
