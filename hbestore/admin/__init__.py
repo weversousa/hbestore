@@ -69,9 +69,9 @@ class ProductView(ModelView):
             for photo in photos:
                 ext = secure_filename(photo.filename).split(".")[1]
                 name = f"{token_hex(30)}.{ext}"
-                photo.save(path.join("hbestore/static/img/products/", name))
+                photo.save("hbestore/static/img/products/" + name)
 
-                format_image(path.join("hbestore/static/img/products/", name))
+                format_image("hbestore/static/img/products/" + name)
 
                 new_photo = Photo(name)
 
