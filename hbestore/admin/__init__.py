@@ -69,9 +69,9 @@ class ProductView(ModelView):
             for photo in photos:
                 ext = secure_filename(photo.filename).split(".")[1]
                 name = f"{token_hex(30)}.{ext}"
-                photo.save(path.join("hbestore/static/img/products", name))
+                photo.save(path.join("hbestore/static/img/products/", name))
 
-                format_image(path.join("hbestore/static/img/products", name))
+                format_image(path.join("hbestore/static/img/products/", name))
 
                 new_photo = Photo(name)
 
@@ -83,7 +83,7 @@ class ProductView(ModelView):
     def on_model_delete(self, model):
         try:
             for photo in model.photos:
-                unlink(path.join("hbestore/static/img/products", photo.name))
+                unlink(path.join("hbestore/static/img/products/", photo.name))
         except (IndexError, FileNotFoundError):
             pass
         return super().on_model_delete(model)
