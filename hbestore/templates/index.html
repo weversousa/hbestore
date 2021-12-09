@@ -69,10 +69,10 @@
 <div class="container">
   <div class="row">
     <div class="col-12 col-md-5">
-      <form class="jumain-center justify-content-md-start mb-3 mb-md-0">
+      <form class="jumain-center justify-content-md-start mb-3 mb-md-0" method="get" action="{{ url_for('home.index') }}">
         <div class="input-group input-group-sm">
-          <input type="text" class="form-control" placeholder="Digite aqui o que procura">
-          <button class="btn btn-hb">Buscar</button>
+          <input type="text" class="form-control" placeholder="Digite aqui o que procura" name="buscar">
+          <button type="submit" class="btn btn-hb">Buscar</button>
         </div>
       </form>
     </div>
@@ -80,9 +80,9 @@
       <div class="d-flex flex-row-reverse justify-content-center justify-content-md-start">
         <form class="d-inline-block">
           <select class="form-select form-select-sm ordem">
-            <option value="recente">Ordenar pelo nome</option>
-            <option value="menor">Ordenar pelo menor preço</option>
-            <option value="maior">Ordenar pelo maior preço</option>
+            <option selected disabled>Ordenar por:</option>
+            <option value="menor">Menor preço</option>
+            <option value="maior">Maior preço</option>
           </select>
         </form>
       </div>
@@ -138,9 +138,9 @@
       <div class="d-flex flex-row-reverse justify-content-center justify-content-md-start">
         <form class="d-inline-block">
           <select class="form-select form-select-sm ordem-2">
-            <option value="recente">Ordenar pelo nome</option>
-            <option value="menor">Ordenar pelo menor preço</option>
-            <option value="maior">Ordenar pelo maior preço</option>
+            <option selected disabled>Ordenar por:</option>
+            <option value="menor">Menor preço</option>
+            <option value="maior">Maior preço</option>
           </select>
         </form>
       </div>
@@ -155,7 +155,7 @@
       <div class="row py-3 d-flex justify-content-around">
 
           <div class="col-12 col-md-4 text-center">
-              &copy; 2021 - HBEStore<br>
+              &copy; 2021 - HBeStore<br>
               Praca 23 de Abril, Biritinga - BA, Brasil<br>
               CEP: 48780-000
           </div>

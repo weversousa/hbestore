@@ -16,12 +16,18 @@ def init_app(app):
 @home.route("/<ordenar>")
 @home.route("/")
 def index(ordenar=None):
+    buscar = request.args.get("buscar", None)
+    if buscar:
+        buscar = buscar.strip().lower()
     if ordenar == "menor":
         produtos = Product.query.order_by(Product.price.asc()).all()
     elif ordenar == "maior":
         produtos = Product.query.order_by(Product.price.desc()).all()
     elif ordenar == "lancamentos":
         produtos = Product.query.order_by(Product.id.desc()).all()
+    elif buscar:
+        produtos = Product.query.filter(Product.name.like(f"%{buscar}%")).all()
+        print(produtos)
     else:
         produtos = Product.query.all()
 
