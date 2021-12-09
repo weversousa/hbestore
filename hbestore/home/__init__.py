@@ -27,7 +27,6 @@ def index(ordenar=None):
         produtos = Product.query.order_by(Product.id.desc()).all()
     elif buscar:
         produtos = Product.query.filter(Product.name.like(f"%{buscar}%")).all()
-        print(produtos)
     else:
         produtos = Product.query.all()
 

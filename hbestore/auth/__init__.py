@@ -45,6 +45,15 @@ def sign_in():
     except IntegrityError:
         db.session.rollback()
 
+    try:
+        new_user = User("lucas.santos@aluno.faculdadeimpacta.com.br", "lucas", "dos santos", "1234", True)
+        new_address = Address("06210050", "256")
+        new_user.adresses = new_address
+        db.session.add(new_user)
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+
     if request.method == "GET":
         return render_template("sign-in.html", title="Entrar")
 
@@ -140,7 +149,7 @@ def recover_password():
         sender="hagab.estore@gmail.com",
         recipients=[user.email],
         html=f'''
-        Olá, {user.first_name.capitalize()}
+        Olá, {user.first_name.capitalize()}<br>
         Sua nova senha: </br>
         <b>{new_password}</b></br></br>
 
