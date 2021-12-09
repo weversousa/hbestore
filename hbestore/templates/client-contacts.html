@@ -1,0 +1,51 @@
+{% extends "client.html" %}
+
+{% block content %}
+
+<div class="col-8">
+  <form action="{{ url_for('client.contacts') }}" method="post">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    
+    {% if messages %}
+    {% for category, message in messages %}
+    {% if category == 'success' %}
+    <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% elif category == 'danger' %}
+    <div class="alert alert-danger" role="alert">{{ message }}</div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    
+    <div class="rounded p-3 mb-2 bg-hb text-white">
+      E-mail: {{ current_user.email}}<br>
+      Celular: {{ current_user.sign_up.cell_phone }} | Fixo: {{ current_user.sign_up.fixed_phone }}
+    </div>
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+    <fieldset class="row gx-3">
+      <div class="form-floating mb-3">
+        <input type="email" name="email" class="form-control" placeholder=" " autofocus>
+        <label>E-mail</label>
+      </div>
+
+      <div class="form-floating mb-3 col-md-6">
+        <input class="form-control" placeholder=" " type="text" name="cellPhone" />
+        <label>Telefone Celular</label>
+    </div>
+    <div class="form-floating mb-3 col-md-6">
+        <input class="form-control" placeholder=" " type="text" name="fixedPhone" />
+        <label>Telefone Fixo</label>
+    </div>
+    </fieldset>
+
+    <div class="mb-3 text-left">
+      <input type="submit" value="Alterar" class="btn btn-lg btn-hb" />
+    </div>
+
+    {% endwith %}
+  </form>
+</div>
+
+
+{% endblock %}

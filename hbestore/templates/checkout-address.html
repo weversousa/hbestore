@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+
+{% block main %}
+<form class="container" method="post" action="{{ url_for('cart.checkout_address') }}">
+  <h1>Selecione o Endereço de Entrega</h1>
+  <h2 class="mb-4">Clique em <b>Continuar</b> para prosseguir para a <b>seleção da forma de pagamento</b>.</h2>
+
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+  <div class="d-flex justify-content-around flex-wrap border rounded-top pt-4 px-3">
+    <div class="mb-4 mx-2 flex-even d-flex justify-content-center">
+      <input type="radio" class="btn-check" name="endereco" autocomplete="off" id="end{{ address.id }}"
+        value="{{ address.id }}" />
+      <label class="btn btn-outline-hb p-4 h-100 w-50" for="end{{ address.id }}">
+        <h3>
+          <b class="text-dark">Casa</b><br>
+          <hr>
+          {{ address.logradouro }}, {{ address.numero }}<br>
+          {{ address.bairro }} - {{ address.localidade }}/{{ address.uf|upper }}<br>
+          CEP: {{ address.cep }}
+        </h3>
+      </label>
+    </div>
+  </div>
+
+  <div class="text-end border border-top-0 rounded-bottom p-4 pb-0">
+    <a href="{{ url_for('cart.checkout_products') }}" class="btn btn-outline-success btn-lg mb-4">Voltar aos Itens</a>
+    <a href="{{ url_for('client.address', change=True) }}" class="btn btn-outline-danger btn-lg mb-4">Alterar Endereço</a>
+    <button type="submit" id="continue" disabled class="btn btn-hb btn-lg ms-2 mb-4">Continuar</button>
+  </div>
+</form>
+  {% endblock %}

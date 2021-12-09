@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+
+{% block main %}
+<div class="container">
+    <h1>Confira os Itens</h1>
+    <h3>Clique em <b>Continuar</b> para prosseguir para a <b>seleção do endereço de entrega</b>.</h3>
+    <ul class="list-group mb-3">
+        {% for product in products %}
+        <li class="list-group-item py-3">
+            <div class="row g-3">
+                <div class="col-4 col-md-3 col-lg-2">
+                    <a href="#">
+                        <img src="{{ url_for('static', filename='img/products/' + product.photo) }}" class="img-thumbnail">
+                    </a>
+                </div>
+                <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
+                    <h4>
+                        <b><a href="{{ url_for('products.product', id=product.id) }}" class="text-decoration-none text-hb">
+                            {{ product.name }}</a></b>
+                    </h4>
+                    <h5>
+                        {{ product.description }}
+                        <br>
+                        <br>
+                        <b>
+                            {{ session['cart'][product.id|string] }} unidade(s) <br>
+                            R$ {{ product.total_item }}
+                        </b>
+                    </h5>
+                </div>                            
+            </div>
+        </li>
+        {% endfor %}
+
+        <li class="list-group-item pt-3 pb-0">
+            <div class="text-end">
+                <h4 class="text-dark mb-3">
+                    Valor Total: R$ {{ total_value }}
+                </h4>
+                <a href="{{ url_for('cart.list_products') }}" class="btn btn-outline-success btn-lg mb-3">
+                    Voltar ao Carrinho
+                </a>
+                <a href="{{ url_for('cart.checkout_address') }}" class="btn btn-hb btn-lg ms-2 mb-3">Continuar</a>
+            </div>
+        </li>
+    </ul>
+</div>
+{% endblock %}

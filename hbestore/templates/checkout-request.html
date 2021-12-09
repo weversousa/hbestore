@@ -1,0 +1,19 @@
+{% extends "index.html" %}
+
+{% block main %}
+<div class="container text-center">
+    <h1>Obrigado!</h1>
+    <hr>
+    <h3>Número de seu pedido:</h3>
+    <h2 class="text-hb"><b>{{ pedido }}</b></h2>
+    <p>Pedido realizado com sucesso. Qualquer dúvida sobre este pedido, entre em contato conosco e informe o número do pedido para que possamos te ajudar.</p>
+    <p>Volte sempre!</p>
+    <p>
+        Atenciosamente,<br>
+        Equipe HBEstore
+    </p>
+    <p>
+        <a href="{{ url_for('home.index') }}" class="btn btn-hb btn-lg">Voltar à Página Principal</a>
+    </p>
+</div>
+{% endblock %}

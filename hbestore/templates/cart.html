@@ -1,0 +1,67 @@
+{% extends "index.html" %}
+
+{% block main %}
+<div class="container">
+    <h1>Carrinho de Compras</h1>
+    <ul class="list-group mb-3">
+        {% for product in products %}
+        <li class="list-group-item py-3">
+            <div class="row g-3">
+                <div class="col-4 col-md-3 col-lg-2">
+                    <a href="{{ url_for('products.product', id=product.id) }}">
+                        <img src="{{ url_for('static', filename='img/products/' + product.photo) }}" class="img-thumbnail">
+                    </a>
+                </div>
+                <div class="col-8 col-md-9 col-lg-7 col-xl-8 text-left align-self-center">
+                    <h4>
+                        <b>
+                            <a href="{{ url_for('products.product', id=product.id) }}" class="text-decoration-none text-hb">
+                                {{ product.name }}
+                            </a>
+                        </b>
+                    </h4>
+                    <h5>
+                        {{ product.description }}
+                    </h5>
+                </div>
+                <div
+                    class="col-6 offset-6 col-sm-6 offset-sm-6 col-md-4 offset-md-8 col-lg-3 offset-lg-0 col-xl-2 align-self-center mt-3">
+                    <div class="input-group">
+                        <a href="{{ url_for('cart.amount_product', id=product.id, arrow='-') }}" class="btn btn-outline-dark btn-sm" type="button">
+                            <i class="bi-caret-down" style="font-size: 16px; line-height: 16px;"></i>
+                        </a>
+                        <input type="text" class="form-control text-center border-dark" value="{{ session['cart'][product.id|string] }}">
+                        <a href="{{ url_for('cart.amount_product', id=product.id, arrow='+', stock=product.stock) }}" class="btn btn-outline-dark btn-sm" type="button">
+                            <i class="bi-caret-up" style="font-size: 16px; line-height: 16px;"></i>
+                        </a>
+                        <a href="{{ url_for('cart.remove_product', id=product.id) }}" class="btn btn-outline-danger border-dark btn-sm" type="button">
+                            <i class="bi-trash" style="font-size: 16px; line-height: 16px;"></i>
+                        </a>
+                    </div>
+                    <div class="text-end mt-2">
+                        <small class="text-secondary">Valor uni: R$ {{ product.price }}</small>
+                        <br />
+                        <span class="text-dark">Valor total: R$ {{ product.total_item }}</span>
+                    </div>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+
+        <li class="list-group-item py-3">
+            <div class="text-end">
+                <h4 class="text-dark mb-3">
+                    Valor Total: R$ {{ total_value }}
+                </h4>
+                <a href="{{ url_for('home.index') }}" class="btn btn-outline-success btn-lg">
+                    Continuar Comprando                            
+                </a>
+                <a href="{{ url_for('cart.checkout_products') }}" class="btn btn-hb btn-lg ms-2 mt-xs-3">Fechar Compra</a>
+            </div>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

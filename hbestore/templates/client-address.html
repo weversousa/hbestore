@@ -1,0 +1,71 @@
+{% extends "client.html" %}
+
+{% block content %}
+<div class="col-8">
+  <form action="{{ url_for('client.address') }}" method="post">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    
+    {% if messages %}
+    {% for category, message in messages %}
+    {% if category == 'success' %}
+    <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% elif category == 'danger' %}
+    <div class="alert alert-danger" role="alert">{{ message }}</div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    
+    <div class="rounded p-3 mb-2 bg-hb text-white">
+      {{ address.logradouro }}, {{ address.numero }} - {{ address.bairro}} - {{ address.localidade}}<br>
+      CEP: {{ address.cep }}<br>
+      {{ address.complement }} {{ address.reference }}
+    </div>
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+    <fieldset class="row gx-3">
+      <legend>Endereço</legend>
+      <div class="form-floating mb-3 col-md-3">
+        <input class="form-control" type="text" name="zipCode" placeholder=" " onblur="pesquisacep(this.value);" />
+        <label>CEP</label>
+      </div>
+      <div class="form-floating mb-3 col-6">
+        <input class="form-control" type="text" id="publicPlace" name="publicPlace" placeholder=" " />
+        <label>Logradouro</label>
+      </div>
+
+      <div class="form-floating mb-3 col-md-3">
+        <input class="form-control" type="text" name="number" placeholder=" " required />
+        <label>Número</label>
+      </div>
+      <div class="clearfix"></div>
+      <div class="form-floating mb-3 col-5">
+        <input class="form-control" type="text" id="district" placeholder=" " />
+        <label>Bairro</label>
+      </div>
+      <div class="form-floating mb-3 col-5">
+        <input class="form-control" type="text" id="location" placeholder=" " />
+        <label>Localidade</label>
+      </div>
+      <div class="form-floating mb-3 col-2">
+        <input class="form-control" type="text" id="state" placeholder=" " />
+        <label>UF</label>
+      </div>
+      <div class="form-floating mb-3 col-md-6">
+        <input class="form-control" type="text" name="complement" placeholder=" " />
+        <label>Complemento</label>
+      </div>
+      <div class="form-floating mb-3 col-md-6">
+        <input class="form-control" type="text" name="reference" placeholder=" " />
+        <label>Referência</label>
+      </div>
+    </fieldset>
+
+    <div class="mb-3 text-left">
+      <input type="submit" value="Alterar" class="btn btn-lg btn-hb" />
+    </div>
+
+    {% endwith %}
+  </form>
+</div>
+{% endblock %}

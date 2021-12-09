@@ -1,0 +1,49 @@
+{% extends "index.html" %}
+
+{% block main %}
+<div class="container">
+  <div class="row g-3">
+    <div class="col-12 col-sm-6">
+      {% if product %}
+      <img src="{{ url_for('static', filename='img/products/' + product.photo_main) }}" class="img-thumbnail"
+        id="imgProduto">
+      <br class="clearfix">
+      <div class="row my-3 gx-3">
+        {% for photo in product.photos %}
+        <div class="col-3">
+          <img src="{{ url_for('static', filename='img/products/' + photo) }}" class="img-thumbnail"
+            onclick="trocarImagem(this)">
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="col-12 col-sm-6">
+      <h1>{{ product.name }}</h1>
+      <p>
+        R$ {{ product.price }}
+      </p>
+      <p>
+        {{ product.description }}
+      </p>
+      <p>
+        <a href="{{ url_for('cart.add_product', id=product.id) }}" class="btn btn-lg btn-hb mb-3 mb-xl-0 me-2">
+          <i class="bi-cart"></i>
+          {% if product.id not in session.cart %}
+          Adicionar ao Carrinho
+          {% else %}
+          Remover do Carrinho
+          {% endif %}
+        </a>
+        <a href="{{ url_for('home.index') }}" class="btn btn-hb btn-lg">Voltar à Página Principal</a>
+      </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<script>
+  function trocarImagem(el) {
+    var imgProduto = document.getElementById("imgProduto");
+    imgProduto.src = el.src;
+  }
+</script>
+{% endblock %}

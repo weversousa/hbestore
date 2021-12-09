@@ -1,0 +1,51 @@
+{% extends "client.html" %}
+
+{% block content %}
+<div class="col-8">
+  <form action="{{ url_for('client.personal_data') }}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+    <fieldset class="row gx-3">
+      <legend>Dados Pessoais</legend>
+      <div class="form-floating mb-3 col-md-6">
+        <input class="form-control" type="text" name="firstName" placeholder=" " autofocus required
+          value="{{ current_user.first_name }}" />
+        <label>Nome</label>
+      </div>
+      <div class="form-floating mb-3 col-md-6">
+        <input class="form-control" type="text" name="lastName" placeholder=" " autofocus required
+          value="{{ current_user.last_name }}" />
+        <label>Sobrenome</label>
+      </div>
+      <div class="form-floating mb-3 col-md-6 col-xl-4">
+        <input class="form-control" type="date" name="birth" placeholder=" " required
+          value="{{ current_user.sign_up.birth.strftime('%Y-%m-%d') }}" />
+        <label for="txtDataNascimento" class="d-inline d-sm-none d-md-inline d-lg-none">DataNascimento</label>
+        <label for="txtDataNascimento" class="d-none d-sm-inline d-md-none d-lg-inline">Datade Nascimento</label>
+      </div>
+      <div class="mb-3 col-md-6 col-xl-4">
+        <div class="form-check">
+          {% if current_user.sign_up.sex == "f" %}
+          <input class="form-check-input" type="radio" checked name="sex" value="f">
+          {% else %}
+          <input class="form-check-input" type="radio" name="sex" value="f">
+          {% endif %}
+          <label class="form-check-label" for="flexRadioDefault1">Feminino</label>
+        </div>
+        <div class="form-check">
+          {% if current_user.sign_up.sex == "m" %}
+          <input class="form-check-input" type="radio" checked name="sex" value="m">
+          {% else %}
+          <input class="form-check-input" type="radio" name="sex" value="m">
+          {% endif %}
+          <label class="form-check-label" for="flexRadioDefault2">Masculino</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <div class="mb-3 text-left">
+      <input type="submit" value="Alterar" class="btn btn-lg btn-hb" />
+    </div>
+  </form>
+</div>
+{% endblock %}

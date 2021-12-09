@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block nav %}
+<div class="container">
+  <a class="navbar-brand" href="/"><b>HBestore</b></a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav flex-grow-1">
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{{ url_for('home.index') }}">
+          <i class="bi bi-house-fill"></i>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{{ url_for('home.index', ordenar='feminino') }}">Feminino</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{{ url_for('home.index', ordenar='masculino') }}">Masculino</a>
+      </li>
+    </ul>
+    <div class="align-self-end">
+      <ul class="navbar-nav">
+        {% if current_user.is_authenticated %}
+        <li class="nav-item">
+          <span class="badge rounded-pill bg-light text-danger position-absolute ms-4 mt-0"
+            title="5 produto(s) no carrinho">
+            <small>
+              {% if "cart" in session %}
+              {{ session.cart | length }}
+              {% endif %}
+            </small>
+          </span>
+          <a href="{{ url_for('cart.list_products') }}" class="nav-link text-white">
+            <i class="bi-cart" style="font-size:24px;line-height:24px;"></i>
+          </a>
+        </li>
+        {% endif %}
+
+        {% if current_user.is_authenticated %}
+        <li class="nav-item"><a href="{{ url_for('client.index') }}" class="nav-link text-white">Olá, {{
+            current_user.first_name }}</a></li>
+        <li class="nav-item"><a href="{{ url_for('client.index') }}" class="nav-link text-white"><i
+              class="bi bi-person-plus-fill"></i></a></li>
+        <li class="nav-item"><a href="{{ url_for('auth.logout') }}" class="nav-link text-white">Sair</a></li>
+        {% else %}
+        <li class="nav-item"><a href="{{ url_for('auth.sign_up') }}" class="nav-link text-white">Criar Conta</a></li>
+        <li class="nav-item"><a href="{{ url_for('auth.sign_in') }}" class="nav-link text-white">Entrar</a></li>
+        {% endif %}
+
+
+        {% if current_user.admin %}
+        <li class="nav-item">
+          <a href="{{ url_for('admin.index') }}" class="nav-link text-white">
+            <i class="bi bi-tools" style="font-size:24px;line-height:24px;"></i>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block main %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-5">
+      <form class="jumain-center justify-content-md-start mb-3 mb-md-0">
+        <div class="input-group input-group-sm">
+          <input type="text" class="form-control" placeholder="Digite aqui o que procura">
+          <button class="btn btn-hb">Buscar</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-12 col-md-7">
+      <div class="d-flex flex-row-reverse justify-content-center justify-content-md-start">
+        <form class="d-inline-block">
+          <select class="form-select form-select-sm ordem">
+            <option value="recente">Ordenar pelo nome</option>
+            <option value="menor">Ordenar pelo menor preço</option>
+            <option value="maior">Ordenar pelo maior preço</option>
+          </select>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <hr mt-3>
+
+  <div class="row g-3">
+    {% for product in products %}
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+      <div class="card text-center bg-light h-100">
+        <a href="{{ url_for('products.product', id=product.id) }}">
+          <img src="{{ url_for('static', filename='img/products/' + product.photo) }}" class="card-img-top"
+            style="object-fit: contain;">
+        </a>
+        <div class="card-header">
+          R$ {{ product.price }}
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text truncar-3l">
+            {{ product.description }}
+            <br /><br /><br />
+          </p>
+        </div>
+        <div class="card-footer">
+          {% if product.id|string in session.cart %}
+          <a href="{{ url_for('cart.add_product', id=product.id) }}" class="btn btn-danger mt-2 d-block">
+            Remover do Carrinho
+          </a>
+          {% elif product.stock == 0 %}
+          <a href="{{ url_for('cart.add_product', id=product.id) }}" class="btn btn-secondary mt-2 d-block disabled">
+            Produto Indisponível
+          </a>
+          {% else %}
+          <a href="{{ url_for('cart.add_product', id=product.id) }}" class="btn btn-hb mt-2 d-block">
+            Adicionar ao Carrinho
+          </a>
+          {% endif %}
+          <small class="text-{{'success' if product.stock > 0 else 'danger' }}">{{ product.stock }} em
+            estoque</small>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <hr class="mt-3">
+
+  <div class="row pb-3">
+    <div class="col-12">
+      <div class="d-flex flex-row-reverse justify-content-center justify-content-md-start">
+        <form class="d-inline-block">
+          <select class="form-select form-select-sm ordem-2">
+            <option value="recente">Ordenar pelo nome</option>
+            <option value="menor">Ordenar pelo menor preço</option>
+            <option value="maior">Ordenar pelo maior preço</option>
+          </select>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer class="border-top text-muted bg-light">
+  <div class="container">
+      <div class="row py-3 d-flex justify-content-around">
+
+          <div class="col-12 col-md-4 text-center">
+              &copy; 2021 - HBEStore<br>
+              Praca 23 de Abril, Biritinga - BA, Brasil<br>
+              CEP: 48780-000
+          </div>
+  
+          <div class="col-12 col-md-4 text-center">
+            <a href="{{ url_for('home.contact') }}" class="text-decoration-none text-dark">Contato pelo Site</a><br>
+            E-mail: <a href="mailto:hagab.estore@gmail.com" class="text-decoration-none text-dark">hagab.estore@gmail.com</a><br>
+            Telefone: <a href="phone:75992562283" class="text-decoration-none text-dark">(75) 99256-2283</a>
+          </div>
+  
+      </div>
+    </div>
+</footer>
+{% endblock %}
