@@ -83,7 +83,7 @@ class ProductView(ModelView):
     def on_model_delete(self, model):
         try:
             for photo in model.photos:
-                unlink(path.join("hbestore/static/img/products/", photo.name))
+                unlink("hbestore/static/img/products/" + photo.name)
         except (IndexError, FileNotFoundError):
             pass
         return super().on_model_delete(model)
