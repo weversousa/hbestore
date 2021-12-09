@@ -215,7 +215,7 @@ upload = None
 def init_app(app):
     global upload
     upload = app.config["UPLOAD_FOLDER"]
-    admin.name = "HBEstore administração"
+    admin.name = "HBestore administração"
     admin.template_mode = "bootstrap4"
     admin.add_view(AnalyticsView(name="Site", endpoint="analytics"))
     admin.add_view(UserView(User, db.session, "Usuário"))

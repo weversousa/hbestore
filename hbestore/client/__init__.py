@@ -5,7 +5,7 @@ from werkzeug.utils import redirect
 from requests import get
 
 from hbestore.database import db
-from hbestore.models import Address, Product, User
+from hbestore.models import Product
 from hbestore.utils import formatar_moeda_real
 
 

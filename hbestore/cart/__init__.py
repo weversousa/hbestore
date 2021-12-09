@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, redirect, url_for, session, request
 from flask_login import login_required, current_user
+from flask_mail import Message
 from requests import get
 
 from hbestore.models import Address, Product, Request, Purchase
 from hbestore.database import db
 from hbestore.utils import formatar_moeda_real
+from hbestore.mail import mail
 
 
 cart = Blueprint("cart", __name__, url_prefix="/cart")
@@ -152,6 +154,21 @@ def checkout_payment():
 
 @cart.route("/checkout/request/<pedido>")
 def checkout_request(pedido):
+    try:
+        msg = Message(
+            subject="Compra aprovada",
+            sender="hagab.estore@gmail.com",
+            recipients=[current_user.email,],
+            html=f'''
+            O seu pedido foi realizado com sucesso:<br>
+
+            <h1>{{ pedido }}</h1>
+            '''
+        )
+        mail.send(msg)
+    except:
+        pass
+
     session["cart"] = dict()
     session.pop("total_value", None)
     return render_template("checkout-request.html", pedido=pedido)

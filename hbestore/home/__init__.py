@@ -72,9 +72,9 @@ def contact():
             subject="Contato pelo site",
             sender="hagab.estore@gmail.com",
             recipients=["hagab.estore@gmail.com",],
-            body=f'''
-            Mensagem enviada por:
-            {name} {email}
+            html=f'''
+            Mensagem enviada por:<br>
+            <b>{name} {email}</b><br>
 
             {message}
             '''
