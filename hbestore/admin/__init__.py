@@ -81,7 +81,7 @@ class ProductView(ModelView):
 
                     format_image("hbestore/static/img/products/" + name)
 
-                    new_photo = Photo(name, photo)
+                    new_photo = Photo(name, photo.filename)
 
                     model.photos.append(new_photo)
             except (IndexError, FileNotFoundError):
@@ -98,7 +98,7 @@ class ProductView(ModelView):
 
                 format_image("hbestore/static/img/products/" + name)
 
-                new_photo = Photo(name, photo)
+                new_photo = Photo(name, photo.filename)
 
                 model.photos.append(new_photo)
         except (IndexError, FileNotFoundError):
