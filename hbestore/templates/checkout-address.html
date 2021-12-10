@@ -1,5 +1,7 @@
 {% extends "index.html" %}
 
+{% block title %}{{ title }}{% endblock %}
+
 {% block main %}
 <form class="container" method="post" action="{{ url_for('cart.checkout_address') }}">
   <h1>Selecione o Endereço de Entrega</h1>

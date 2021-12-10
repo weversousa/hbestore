@@ -36,24 +36,6 @@ def sign_in():
     if current_user.is_authenticated:
         return redirect(url_for("home.index"))
 
-    try:
-        new_user = User("weverton.sousa@aluno.faculdadeimpacta.com.br", "weverton", "teixeira", "1234", True)
-        new_address = Address("06210050", "256")
-        new_user.adresses = new_address
-        db.session.add(new_user)
-        db.session.commit()
-    except IntegrityError:
-        db.session.rollback()
-
-    try:
-        new_user = User("lucas.santos@aluno.faculdadeimpacta.com.br", "lucas", "dos santos", "1234", True)
-        new_address = Address("06210050", "256")
-        new_user.adresses = new_address
-        db.session.add(new_user)
-        db.session.commit()
-    except IntegrityError:
-        db.session.rollback()
-
     if request.method == "GET":
         return render_template("sign-in.html", title="Entrar")
 

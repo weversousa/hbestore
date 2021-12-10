@@ -36,7 +36,7 @@ def personal_data():
     current_user.last_name = last_name
     current_user.sign_up.birth = birth
     db.session.commit() 
-    return redirect(url_for("client.personal_data"))
+    return redirect(url_for("client.personal_data"), title="Dados Pessoais")
 
 
 @client.route("/contacts", methods=["GET", "POST"])

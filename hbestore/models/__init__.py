@@ -172,12 +172,14 @@ class Photo(db.Model):
     __tablename__ = "photos"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
+    image = db.Column(db.LargeBinary, nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     product_id = db.Column(db.Integer, db.ForeignKey("products.id"))
 
-    def __init__(self, name):
+    def __init__(self, name, image):
         self.name = name
+        self.image = image
 
 
 class Request(db.Model):
