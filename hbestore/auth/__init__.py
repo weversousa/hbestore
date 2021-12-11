@@ -126,19 +126,22 @@ def recover_password():
     user.password = user.criptografar_password(new_password)
     db.session.commit()
 
-    msg = Message(
-        subject="Recuperação de senha",
-        sender="hagab.estore@gmail.com",
-        recipients=[user.email],
-        html=f'''
-        Olá, {user.first_name.capitalize()}<br>
-        Sua nova senha: </br>
-        <b>{new_password}</b></br></br>
+    try:
+        msg = Message(
+            subject="Recuperação de senha",
+            sender="hagab.estore@gmail.com",
+            recipients=[user.email],
+            body=f'''
+            Olá, {user.first_name.capitalize()}<br>
+            Sua nova senha: </br>
+            <b>{new_password}</b></br></br>
 
-        Você pode alterar essa senha através da área do cliente.
-        '''
-    )
-    mail.send(msg)
+            Você pode alterar essa senha através da área do cliente.
+            '''
+        )
+        mail.send(msg)
+    except:
+        pass
     return redirect(url_for('auth.confirm_recover_password', email=email))
 
 
