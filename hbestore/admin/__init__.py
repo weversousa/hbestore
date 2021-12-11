@@ -1,7 +1,7 @@
-from os import path, unlink
+from os import unlink
 from secrets import token_hex
 
-from flask import redirect, url_for, flash
+from flask import redirect, url_for
 from flask_admin import Admin, AdminIndexView, expose, BaseView
 from flask_admin.contrib.sqla import ModelView, form
 from wtforms.validators import NumberRange
@@ -11,7 +11,7 @@ from werkzeug.security import generate_password_hash
 
 from hbestore.database import db
 from hbestore.models import User, Brand, Category, Color, Size, Product, Photo, Request
-from hbestore.utils import format_image, formatar_moeda_real
+from hbestore.utils import format_image, formatar_moeda_real, via_cep2
 
 
 class MyAdminIndexView(AdminIndexView):
@@ -81,7 +81,7 @@ class ProductView(ModelView):
 
                     format_image("hbestore/static/img/products/" + name)
 
-                    new_photo = Photo(name, photo.read())
+                    new_photo = Photo(name)
 
                     model.photos.append(new_photo)
             except (IndexError, FileNotFoundError):
@@ -98,7 +98,7 @@ class ProductView(ModelView):
 
                 format_image("hbestore/static/img/products/" + name)
 
-                new_photo = Photo(name, photo.read())
+                new_photo = Photo(name)
 
                 model.photos.append(new_photo)
         except (IndexError, FileNotFoundError):
@@ -172,16 +172,14 @@ class RequestView(ModelView):
         li = []
         for purchase in pedido.purchases:
             p = Product.query.get(purchase.product_id)
-            li.append(f"(ID-{p.id}; Total={purchase.amount})")
-
-        
+            li.append(f"<ID-{p.id};{p.name};{p.size.name};{p.color.name};Unidades={purchase.amount}>")
         return li
 
-    can_edit = False
+    can_edit = True
     can_delete = False
+    can_create = False
 
-
-    column_list = ["id", "value_total", "form_of_payment", "created_on", "user", "item"]
+    column_list = ["id", "value_total", "form_of_payment", "created_on", "user", "item", "address", "shipping"]
 
     column_labels = {
         "id": "Nº Pedido",
@@ -190,17 +188,21 @@ class RequestView(ModelView):
         "created_on": "Data da Compra",
         "user": "Cliente",
         "item": "Produtos",
+        "address": "Endereço de entrega",
+        "shipping": "Produto Enviado"
     }
-
 
     column_formatters = {
         "value_total": lambda self, request, pedido, *args: formatar_moeda_real(pedido.value_total),
         "user": user_name,
         "item": produtos,
+        "address": lambda self, request, pedido, *args: via_cep2(pedido.zip_code, pedido.number),
         "created_on": lambda self, request, pedido, *args: pedido.created_on.strftime('%d/%m/%Y %H:%M'),
     }
 
     column_default_sort = ("created_on", True)
+
+    form_excluded_columns = ["purchases", "zip_code", "number", "id", "value_total", "form_of_payment", "created_on", "user", "item", "address"]
 
 
 class AnalyticsView(BaseView):

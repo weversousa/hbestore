@@ -41,10 +41,12 @@
         {% endif %}
 
         {% if current_user.is_authenticated %}
-        <li class="nav-item"><a href="{{ url_for('client.index') }}" class="nav-link text-white">Olá, {{
+        <li class="nav-item"><a class="nav-link text-white">Olá, {{
             current_user.first_name }}</a></li>
+            {% if not current_user.admin %}
         <li class="nav-item"><a href="{{ url_for('client.index') }}" class="nav-link text-white"><i
               class="bi bi-person-plus-fill"></i></a></li>
+              {% endif %}
         <li class="nav-item"><a href="{{ url_for('auth.logout') }}" class="nav-link text-white">Sair</a></li>
         {% else %}
         <li class="nav-item"><a href="{{ url_for('auth.sign_up') }}" class="nav-link text-white">Criar Conta</a></li>

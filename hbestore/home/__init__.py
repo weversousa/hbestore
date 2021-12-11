@@ -37,20 +37,20 @@ def index(ordenar=None):
                 if p.category.name.lower() == ordenar:
                     dict_product = {}
                     dict_product["id"] = p.id
-                    dict_product["name"] = p.name.capitalize()
+                    dict_product["name"] = p.name.lower()
                     dict_product["brand"] = p.brand.name.capitalize() if p.brand else ""
                     dict_product["category"] = p.category.name.capitalize() if p.category else ""
                     dict_product["size"] = p.size.name.upper() if p.size else ""
                     dict_product["color"] = p.color.name.capitalize() if p.color else ""
                     dict_product["price"] = formatar_moeda_real(p.price)
-                    dict_product["description"] = p.description
+                    dict_product["description"] = p.description.lower()
                     dict_product["stock"] = calcular_estoque(session, p.id, p.stock)
                     dict_product["photo"] = p.photos[0].name
                     products.append(dict_product)
             else:
                 dict_product = {}
                 dict_product["id"] = p.id
-                dict_product["name"] = p.name.capitalize()
+                dict_product["name"] = p.name.lower()
                 dict_product["brand"] = p.brand.name.capitalize() if p.brand else ""
                 dict_product["category"] = p.category.name.capitalize() if p.category else ""
                 dict_product["size"] = p.size.name.upper() if p.size else ""

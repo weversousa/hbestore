@@ -19,14 +19,14 @@ def init_app(app):
 @client.route("/")
 @login_required
 def index():
-    return render_template("client.html")
+    return render_template("client.html", title="Minha Conta")
 
 
 @client.route("/personal-data", methods=["GET", "POST"])
 @login_required
 def personal_data():
     if request.method == "GET":
-        return render_template("client-personal-data.html")
+        return render_template("client-personal-data.html", title="Dados Pessoais")
     
     first_name = request.form["firstName"].strip().lower()
     last_name = request.form["lastName"].strip().lower()
@@ -36,7 +36,7 @@ def personal_data():
     current_user.last_name = last_name
     current_user.sign_up.birth = birth
     db.session.commit() 
-    return redirect(url_for("client.personal_data"), title="Dados Pessoais")
+    return redirect(url_for("client.personal_data"))
 
 
 @client.route("/contacts", methods=["GET", "POST"])

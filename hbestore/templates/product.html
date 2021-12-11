@@ -27,6 +27,10 @@
       <p>
         {{ product.description }}
       </p>
+      <p><b>Marca:</b> {{ product.brand }}</p>
+      <p><b>Tamanho:</b> {{ product.size }}</p>
+      <p><b>Cor:</b> {{ product.color }}</p>
+      <p><b>Disponível:</b> {{ product.stock }} unidade(s)</p>
       <p>
         <a href="{{ url_for('cart.add_product', id=product.id) }}" class="btn btn-lg btn-hb mb-3 mb-xl-0 me-2">
           <i class="bi-cart"></i>

@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from flask_mail import Message
 from requests import get
 
-from hbestore.models import Address, Product, Request, Purchase
+from hbestore.models import Product, Request, Purchase
 from hbestore.database import db
 from hbestore.utils import formatar_moeda_real
 from hbestore.mail import mail
@@ -48,7 +48,7 @@ def list_products():
         products.append(p)
 
     total_value = formatar_moeda_real(f"{total_value:.2f}")
-    return render_template("cart.html", products=products, total_value=total_value)
+    return render_template("cart.html", products=products, total_value=total_value, title="Produtos")
 
 
 @cart.route("/remove/product/<int:id>")
@@ -102,7 +102,7 @@ def checkout_products():
 
     session["total_value"] = f"{total_value:.2f}"
     total_value = formatar_moeda_real(f"{total_value:.2f}")
-    return render_template("checkout-products.html", products=products, total_value=total_value)
+    return render_template("checkout-products.html", products=products, total_value=total_value, title="Confirmação de Produtos")
 
 
 @cart.route("/checkout/address", methods=["GET", "POST"])
@@ -113,7 +113,7 @@ def checkout_address():
         address["numero"] = current_user.adresses.number
         address["reference"] = current_user.adresses.reference
         address["complement"] = current_user.adresses.complement
-        return render_template("checkout-address.html", address=address)
+        return render_template("checkout-address.html", address=address, title="Endereço")
     else:
         return redirect(url_for("cart.checkout_payment"))
 
@@ -130,15 +130,15 @@ def checkout_payment():
         parcelas["quatro"] = formatar_moeda_real(f'{(float(session["total_value"]) / 4):.2f}')
         parcelas["cinco"] = formatar_moeda_real(f'{(float(session["total_value"]) / 5):.2f}')
         parcelas["seis"] = formatar_moeda_real(f'{(float(session["total_value"]) / 6):.2f}')
-        return render_template("checkout-payment.html", total_value=total_value, parcelas=parcelas)
+        return render_template("checkout-payment.html", total_value=total_value, parcelas=parcelas, title="Pagamento")
     else:
         troco = request.form["troco"]
         if troco != "":
             troco = formatar_moeda_real(f'{troco.replace(",", ".")}')
-            pedido = Request(current_user.id, current_user.adresses.id, f"Dinheiro: R$ {troco}", float(session["total_value"]))
+            pedido = Request(current_user.id, current_user.adresses.zip_code, current_user.adresses.number, f"Dinheiro: R$ {troco}", float(session["total_value"]))
         else:
             installments = request.form["installments"]
-            pedido = Request(current_user.id, current_user.adresses.id, f"Cartão: {installments}", float(session["total_value"]))
+            pedido = Request(current_user.id, current_user.adresses.zip_code, current_user.adresses.number, f"Cartão: {installments}", float(session["total_value"]))
 
         db.session.add(pedido)
         db.session.commit()
@@ -158,8 +158,8 @@ def checkout_request(pedido):
         msg = Message(
             subject="Compra aprovada",
             sender="hagab.estore@gmail.com",
-            recipients=[current_user.email,],
-            html=f'''
+            recipients=[current_user.email],
+            body=f'''
             O seu pedido foi realizado com sucesso:<br>
 
             <h1>{{ pedido }}</h1>
@@ -171,4 +171,4 @@ def checkout_request(pedido):
 
     session["cart"] = dict()
     session.pop("total_value", None)
-    return render_template("checkout-request.html", pedido=pedido)
+    return render_template("checkout-request.html", pedido=pedido, title="Número do Pedido")

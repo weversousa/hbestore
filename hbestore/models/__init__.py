@@ -172,30 +172,31 @@ class Photo(db.Model):
     __tablename__ = "photos"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    image = db.Column(db.LargeBinary, nullable=False)
     created_on = db.Column(db.DateTime, default=datetime.now)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     product_id = db.Column(db.Integer, db.ForeignKey("products.id"))
 
-    def __init__(self, name, image):
+    def __init__(self, name):
         self.name = name
-        self.image = image
 
 
 class Request(db.Model):
     __tablename__ = "requests"
     id = db.Column(db.Integer, primary_key=True) 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-    address_id = db.Column(db.Integer, db.ForeignKey("adresses.id"), nullable=False)
+    zip_code = db.Column(db.String(8), nullable=False)
+    number = db.Column(db.String(5), nullable=False)
     form_of_payment = db.Column(db.String(50), nullable=False)
     value_total = db.Column(db.Numeric(5,2), nullable=False)
+    shipping = db.Column(db.Boolean, default=False)
     created_on = db.Column(db.DateTime, default=datetime.now)
 
     purchases = db.relationship("Purchase")
 
-    def __init__(self, user_id, address_id, form_of_payment, value_total):
+    def __init__(self, user_id, zip_code, number, form_of_payment, value_total):
         self.user_id = user_id
-        self.address_id = address_id
+        self.zip_code = zip_code
+        self.number = number
         self.form_of_payment = form_of_payment
         self.value_total = value_total
 

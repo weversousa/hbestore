@@ -1,4 +1,5 @@
 from PIL import Image
+from requests import get
 
 
 def formatar_moeda_real(valor):
@@ -35,3 +36,12 @@ def format_image(image_path):
     img = Image.open(image_path)
     img = img.resize((1200, 1200))
     img.save(image_path)
+
+
+def via_cep2(cep, number):
+        address = get(f"https://viacep.com.br/ws/{cep}/json/").json()
+        r = f"{address['logradouro']}, {number} - {address['bairro']} - {address['localidade']}/{address['uf']} - {address['cep']}"
+        # address["numero"] = current_user.adresses.number
+        # address["reference"] = current_user.adresses.reference
+        # address["complement"] = current_user.adresses.complement
+        return r
