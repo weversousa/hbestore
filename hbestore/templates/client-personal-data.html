@@ -7,7 +7,8 @@
   <form action="{{ url_for('client.personal_data') }}" method="post">
     <div class="rounded p-3 mb-2 bg-hb text-white">
       Nome: {{ current_user.first_name}} {{ current_user.last_name}}<br>
-      Data de Nascimento: {{ current_user.sign_up.birth }} | Sexo {{ current_user.sign_up.sex }}
+      Data de Nascimento: {{ current_user.sign_up.birth.strftime('%d-%m-%Y') }}<br>
+      Sexo: {% if current_user.sign_up.sex == "f" %}Feminino{% else %}Masculino{% endif %}
     </div>
 
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
