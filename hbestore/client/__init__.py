@@ -31,11 +31,16 @@ def personal_data():
     first_name = request.form["firstName"].strip().lower()
     last_name = request.form["lastName"].strip().lower()
     birth = request.form["birth"]
+    sex = request.form["sex"]
 
-    current_user.first_name = first_name
-    current_user.last_name = last_name
-    current_user.sign_up.birth = birth
-    db.session.commit() 
+    try:
+        current_user.first_name = first_name
+        current_user.last_name = last_name
+        current_user.sign_up.birth = birth
+        current_user.sign_up.sex = sex
+        db.session.commit() 
+    except:
+        pass
     return redirect(url_for("client.personal_data"))
 
 
@@ -48,13 +53,16 @@ def contacts():
     cell_phone = request.form["cellPhone"]
     fixed_phone = request.form["fixedPhone"]
 
-    if cell_phone != "":
-        current_user.sign_up.cell_phone = cell_phone
+    try:
+        if cell_phone != "":
+            current_user.sign_up.cell_phone = cell_phone
 
-    if fixed_phone != "":
-        current_user.sign_up.fixed_phone = fixed_phone
+        if fixed_phone != "":
+            current_user.sign_up.fixed_phone = fixed_phone
 
-    db.session.commit() 
+        db.session.commit() 
+    except:
+        pass
     return redirect(url_for("client.contacts"))
 
 
@@ -63,12 +71,15 @@ def contacts():
 @login_required
 def address(change=None):
     if request.method == "GET":
-        address = get(f"https://viacep.com.br/ws/{current_user.adresses.zip_code}/json/").json()
-        address["numero"] = current_user.adresses.number
-        address["reference"] = current_user.adresses.reference
-        address["complement"] = current_user.adresses.complement
-        if change:
-            session["change"] = True
+        try:
+            address = get(f"https://viacep.com.br/ws/{current_user.adresses.zip_code}/json/").json()
+            address["numero"] = current_user.adresses.number
+            address["reference"] = current_user.adresses.reference
+            address["complement"] = current_user.adresses.complement
+            if change:
+                session["change"] = True
+        except:
+            pass
         return render_template("client-address.html", address=address, title="Endereço")
     else:
         zip_code = request.form["zipCode"]

@@ -5,6 +5,11 @@
 {% block content %}
 <div class="col-8">
   <form action="{{ url_for('client.personal_data') }}" method="post">
+    <div class="rounded p-3 mb-2 bg-hb text-white">
+      Nome: {{ current_user.first_name}} {{ current_user.last_name}}<br>
+      Data de Nascimento: {{ current_user.sign_up.birth }} | Sexo {{ current_user.sign_up.sex }}
+    </div>
+
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
 
     <fieldset class="row gx-3">
