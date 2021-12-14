@@ -130,11 +130,11 @@ def recover_password():
         msg = Message(
             subject="Recuperação de senha",
             sender="hagab.estore@gmail.com",
-            recipients=[user.email],
+            recipients=[email, ],
             body=f'''
-            Olá, {user.first_name.capitalize()}<br>
-            Sua nova senha: </br>
-            <b>{new_password}</b></br></br>
+            Olá, {user.first_name.capitalize()}
+            Sua nova senha:
+            {new_password}
 
             Você pode alterar essa senha através da área do cliente.
             '''
