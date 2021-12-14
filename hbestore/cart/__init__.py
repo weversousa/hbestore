@@ -162,7 +162,10 @@ def checkout_request(pedido):
             body=f'''
             O seu pedido foi realizado com sucesso:
 
-            Nº pedido: {{ pedido }}
+            Nº pedido: {pedido}
+
+            Todos os detalhes do pedido você encontra em:
+            Minha Conta na área do Cliente.
             '''
         ))
     except Exception:
