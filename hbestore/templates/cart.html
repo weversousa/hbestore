@@ -32,7 +32,7 @@
                         <a href="{{ url_for('cart.amount_product', id=product.id, arrow='-') }}" class="btn btn-outline-dark btn-sm" type="button">
                             <i class="bi-caret-down" style="font-size: 16px; line-height: 16px;"></i>
                         </a>
-                        <input type="text" class="form-control text-center border-dark" value="{{ session['cart'][product.id|string] }}">
+                        <input type="text" class="form-control text-center border-dark" value="{{ session['cart'][product.id|string] }}" disabled style="background-color: #fff;">
                         <a href="{{ url_for('cart.amount_product', id=product.id, arrow='+', stock=product.stock) }}" class="btn btn-outline-dark btn-sm" type="button">
                             <i class="bi-caret-up" style="font-size: 16px; line-height: 16px;"></i>
                         </a>

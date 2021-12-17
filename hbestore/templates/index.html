@@ -44,8 +44,17 @@
         <li class="nav-item"><a class="nav-link text-white">Olá, {{
             current_user.first_name }}</a></li>
             {% if not current_user.admin %}
-        <li class="nav-item"><a href="{{ url_for('client.index') }}" class="nav-link text-white"><i
-              class="bi bi-person-plus-fill"></i></a></li>
+        <li class="nav-item">
+          <div class="btn-group" role="group">
+            <button id="btnGroupDrop1" type="button" class="btn btn-hb2 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              Minha Conta
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+              <li><a class="dropdown-item" href="{{ url_for('client.requests') }}">Meus Pedidos</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('client.index') }}">Meus Dados</a></li>
+            </ul>
+          </div>
+        </li>
               {% endif %}
         <li class="nav-item"><a href="{{ url_for('auth.logout') }}" class="nav-link text-white">Sair</a></li>
         {% else %}

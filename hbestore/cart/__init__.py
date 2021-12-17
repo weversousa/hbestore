@@ -1,3 +1,5 @@
+from math import ceil
+
 from flask import Blueprint, render_template, redirect, url_for, session, request
 from flask_login import login_required, current_user
 from flask_mail import Message, smtplib
@@ -130,7 +132,8 @@ def checkout_payment():
         parcelas["quatro"] = formatar_moeda_real(f'{(float(session["total_value"]) / 4):.2f}')
         parcelas["cinco"] = formatar_moeda_real(f'{(float(session["total_value"]) / 5):.2f}')
         parcelas["seis"] = formatar_moeda_real(f'{(float(session["total_value"]) / 6):.2f}')
-        return render_template("checkout-payment.html", total_value=total_value, parcelas=parcelas, title="Pagamento")
+        min_value = ceil(float(session["total_value"]))
+        return render_template("checkout-payment.html", total_value=total_value, parcelas=parcelas, title="Pagamento", min_value=min_value)
     else:
         troco = request.form["troco"]
         if troco != "":

@@ -19,22 +19,22 @@
         <hr>
 
         <div class="form-floating mb-3">
-          <input type="text" id="txtNome" name="name" class="form-control" placeholder=" " minlength="5" maxlength="30" autofocus>
+          <input type="text" id="txtNome" name="name" class="form-control" placeholder=" " minlength="5" maxlength="30" autofocus required>
           <label for="txtNome" class="text-black-50">Nome Impresso no Cartão</label>
         </div>
 
         <div class="form-floating mb-3">
-          <input type="number" id="txtNumero" name="number" class="form-control" placeholder=" " pattern="[0-9]{16}">
+          <input type="number" id="txtNumero" name="number" class="form-control" placeholder=" " pattern="[0-9]{16}" required>
           <label for="txtNumero" class="text-black-50">Número do Cartão</label>
         </div>
 
         <div class="form-floating mb-3">
-          <input type="text" id="txtValidade" name="dateValidate" class="form-control" placeholder=" " pattern="^(0[1-9]|1[0-2])\/?([0-9]{2})$">
+          <input type="text" id="txtValidade" name="dateValidate" class="form-control" placeholder=" " pattern="^(0[1-9]|1[0-2])\/?([0-9]{2})$" required>
           <label for="txtValidade" class="text-black-50">Validade (mm/aa)</label>
         </div>
 
         <div class="form-floating mb-3">
-          <input type="text" id="txtCodigo" name="code" class="form-control" placeholder=" " min="3" max="3">
+          <input type="text" id="txtCodigo" name="code" class="form-control" placeholder=" " min="3" max="3" required>
           <label for="txtCodigo" class="text-black-50">Código de Segurança</label>
         </div>
 
@@ -61,7 +61,7 @@
         <br>
         <p>Se precisar de troco, informe no campo abaixo.</p>
         <div class="form-floating mb-3">
-          <input type="number" id="txtTroco" name="troco" class="form-control" placeholder=" " min="0.00" max="10000.00" step="0.01">
+          <input type="number" id="txtTroco" name="troco" class="form-control" placeholder=" " min="{{ min_value }}.00" max="10000.00" step="0.01">
           <label for="txtTroco" class="text-black-50">Precisa de troco para quanto?</label>
         </div>
       </label>

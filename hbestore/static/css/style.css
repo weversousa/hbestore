@@ -64,13 +64,29 @@ fieldset.row .form-floating>label {
     color: #7a5722;
 }
 
-.bg-hb, .btn-hb {
+.bg-hb, .btn-hb, .btn-hb2 {
     background-color: #d89b40;
     color: white;
+    border-color: #d89b40;
+}
+
+.btn-hb2:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0;
 }
 
 .btn-hb:hover {
     background-color: #7a5722;
+    color: white;
+}
+
+.btn-hb2:hover {
+    background-color: #d89b40;
+    color: white;
+}
+
+.btn-hb2::selection {
+    background-color: #d89b40;
     color: white;
 }
 
@@ -99,6 +115,11 @@ fieldset.row .form-floating>label {
 }
 
 .accordion-button:not(.collapsed) {
+    color: white;
+    background-color: #d89b40;
+}
+
+.dropdown-item:checked, .dropdown-item:focus, .dropdown-item::selection {
     color: white;
     background-color: #d89b40;
 }

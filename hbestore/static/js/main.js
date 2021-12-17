@@ -94,6 +94,18 @@ for (let payment of listPayment) {
     });
 }
 
+document.getElementById("txtNome").addEventListener("click", () => {
+    document.getElementById("txtTroco").value=("");
+})
+
+document.getElementById("txtTroco").addEventListener("click", () => {
+    document.getElementById("txtNome").value=("");
+    document.getElementById("txtNumero").value=("");
+    document.getElementById("txtValidade").value=("");
+    document.getElementById("txtCodigo").value=("");
+    document.getElementById("selParcelas").value=("");
+})
+
 
 //
 let id = ""
@@ -119,4 +131,3 @@ function pegarValorDoSelect(evento) {
 
 const ordem = document.querySelector(".ordem");
 ordem.addEventListener("change", pegarValorDoSelect);
-
