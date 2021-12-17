@@ -4,3 +4,4 @@ limpador.py
 __pycache__
 migrations
 dicas.md
+development.env
