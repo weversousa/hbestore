@@ -1,0 +1,74 @@
+{% extends "admin/master.html" %}
+
+{% block body %}
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+  {% for pedido in pedidos %}
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="heading{{ pedido.id }}">
+      <h4 class="panel-title">
+        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
+          href="#collapse{{ pedido.id }}" aria-expanded="false" aria-controls="collapse{{ pedido.id }}">
+          Nº Pedido #{{ pedido.id }} - Realizado {{ pedido.date }} - Envio <span class="{{ pedido.shipping }}" aria-hidden="true"></span>
+        </a>
+      </h4>
+    </div>
+    <div id="collapse{{ pedido.id }}" class="panel-collapse collapse" role="tabpanel"
+      aria-labelledby="heading{{ pedido.id }}">
+      <div class="panel-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Produto</th>
+              <th>Marca</th>
+              <th class="text-center">Tamanho</th>
+              <th>Cor</th>
+              <th class="text-end">R$ Unit.</th>
+              <th class="text-center">Qtde.</th>
+              <th class="text-end">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for produto in pedido.products %}
+            <tr>
+              <td>{{ produto.id }}</td>
+              <td>{{ produto.name }}</td>
+              <td>{{ produto.brand }}</td>
+              <td>{{ produto.size }}</td>
+              <td>{{ produto.color }}</td>
+              <td class="text-end">{{ produto.price }}</td>
+              <td class="text-center">{{ produto.amount }}</td>
+              <td class="text-end">{{ produto.subtotal }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th colspan="8" style="background-color: cadetblue;"></th>
+            </tr>
+            <tr>
+              <th class="text-end" colspan="3">Valor dos Produtos</th>
+              <td class="text-end" colspan="5">{{ pedido.value_total }}</td>
+            </tr>
+            <tr>
+              <th class="text-end" colspan="3">Forma de Pagamento</th>
+              <td class="text-end" colspan="5">{{ pedido.form_of_payment }}</td>
+            </tr>
+            <tr>
+              <th class="text-end" colspan="3">Nome do Cliente</th>
+              <td class="text-end" colspan="5">{{ pedido.client }}</td>
+            </tr>
+            <tr>
+              <th class="text-end" colspan="3">Endereço de Entraga</th>
+              <td class="text-end" colspan="5">{{ pedido.address }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+{% endblock %}
