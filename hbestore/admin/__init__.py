@@ -1,7 +1,8 @@
 from os import unlink
 from secrets import token_hex
+from datetime import datetime
 
-from flask import redirect, url_for, jsonify
+from flask import redirect, url_for, flash
 from flask_admin import Admin, AdminIndexView, expose, BaseView
 from flask_admin.contrib.sqla import ModelView, form
 from flask_admin.menu import MenuLink
@@ -9,6 +10,7 @@ from wtforms.validators import NumberRange
 from flask_login import current_user
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
+from sqlalchemy.exc import IntegrityError
 
 from hbestore.database import db
 from hbestore.models import User, Brand, Category, Color, Size, Product, Photo, Request
@@ -54,6 +56,16 @@ class UserView(ModelView):
 
 
 class BrandView(ModelView):
+    def on_model_change(self, form, model, is_created):
+        model.name = form.name.data.lower()
+        return super().on_model_change(form, model, is_created)
+
+    def handle_view_exception(self, exc):
+        if isinstance(exc, IntegrityError):
+            flash(u'Esse registro já existe', 'error')
+            return True
+        return super().handle_view_exception(exc)
+
     column_list = ["name", "created_on"]
     column_labels = {"name": "Nome", "created_on": "Criado em"}
     form_excluded_columns = ["created_on"]
@@ -202,14 +214,18 @@ class RequestShippingView(ModelView):
     can_delete = False
     can_create = False
 
-    column_list = ["id", "shipping"]
-
-    column_labels = {
-        "id": "Nº Pedido",
-        "shipping": "Enviado"
+    column_list = ["id", "created_on", "shipping", "shipping_on"]
+    column_labels = {"id": "Nº Pedido", "created_on": "Realizado em", "shipping": "Enviado", "shipping_on": "Enviado em"}
+    column_formatters = {
+        "created_on": lambda self, request, request_shipping, *args: request_shipping.created_on.strftime('%d/%m/%Y %H:%M'),
+        "shipping_on": lambda self, request, request_shipping, *args: request_shipping.shipping_on.strftime('%d/%m/%Y %H:%M') if request_shipping.shipping_on else None,
     }
-
     column_searchable_list = ["id"]
+    form_columns = ["shipping"]
+
+    def on_model_change(self, form, model, is_created):
+        model.shipping_on = datetime.now()
+        return super().on_model_change(form, model, is_created)
 
 
 class HomeMenuLink(MenuLink):

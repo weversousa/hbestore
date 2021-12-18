@@ -190,6 +190,7 @@ class Request(db.Model):
     value_total = db.Column(db.Numeric(5,2), nullable=False)
     shipping = db.Column(db.Boolean, default=False)
     created_on = db.Column(db.DateTime, default=datetime.now)
+    shipping_on = db.Column(db.DateTime, default=None)
 
     purchases = db.relationship("Purchase")
 
